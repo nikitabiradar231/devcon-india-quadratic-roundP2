@@ -109,6 +109,18 @@ VITE_CONTRACT_ADDRESS=your_deployed_contract_address
 
 ---
 
+### Running the Frontend Locally
+```bash
+# 1. Install frontend dependencies
+npm run frontend:install
+
+# 2. Launch Vite development server
+npm run frontend:dev
+```
+The application will be accessible at `http://localhost:5173`. When `VITE_CONTRACT_ADDRESS` is configured, it connects directly to Ethereum Sepolia via Viem. If unconfigured or in offline mode, it falls back to verified static demonstration data.
+
+---
+
 ## 4. Testing & Verification
 
 ### Running All Tests (Foundry Contracts + Frontend Vitest)
@@ -120,11 +132,12 @@ npm test
 ```bash
 forge test -vvv
 ```
-**Current Result:** 24 passing tests across 4 test suites:
+**Current Result:** 29 passing tests across 5 test suites:
 - `IntegerSqrtTest`: 7 passed (Fuzzing, OpenZeppelin equivalence, precision boundaries)
 - `GasScalabilityTest`: 1 passed (50+ contributors across 5 projects under 630k gas)
-- `QuadraticFundingRoundTest`: 15 passed (Invariants, Merkle gating, anti-split, CEI, timing)
-- `TwoHundredBackersTest`: 1 passed (Onchain simulation of 200 backers beating 1 whale 200:1)
+- `DeploymentWorkflowTest`: 5 passed (Timing buffers, registration cutoffs, authorization, parameter validation)
+- `QuadraticFundingRoundTest`: 15 passed (Invariants, Merkle gating, anti-split aggregation, CEI claims, timing)
+- `TwoHundredBackersTest`: 1 passed (Simulation of 200 backers beating 1 whale 200:1 mathematically)
 
 ### 2. Code Formatting Check
 ```bash
@@ -172,14 +185,18 @@ npm run export-results
 
 ## 5. Sepolia Testnet Deployment
 
-### Live Deployed Contract
+### Canonical Deployed Contract
 - **Contract Address:** [`0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC`](https://sepolia.etherscan.io/address/0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC)
 - **Deployment Transaction:** [`0x1834ef9d96daec11f03317c6e48b4ce934dfe94745802542e8797811867c7a33`](https://sepolia.etherscan.io/tx/0x1834ef9d96daec11f03317c6e48b4ce934dfe94745802542e8797811867c7a33)
 - **Deployment Block:** `12012407`
 - **Network:** Ethereum Sepolia (`chainId: 11155111`)
 - **Deployer / Operator:** `0x31e9117D0BfceA67088aA96e356473c52CF9f9fF`
 - **Eligibility Merkle Root:** `0x3d46a36f54db9dafd55ba03b00ccea72265b806e0cf494752ec20e9c20ab680d`
-- **Initial Matching Pool:** 0 wei
+- **Current Matching Pool:** 0 wei (unfunded)
+- **Current Registered Projects:** 0 onchain (the initial deployment round start buffer elapsed before registration was called; the contract remains active and auditable)
+
+> **Important Deployment Distinction:**
+> The address above is the permanent canonical deployment record on Sepolia. A proposed fresh deployment plan is prepared in `scripts/deploy-and-register.ts` which introduces a dynamic 2-hour pre-round buffer to register all four draft projects before `roundStart`. The existing deployment record remains preserved and recoverable.
 
 ### Verify Deployment Onchain
 To verify bytecode, operator, Merkle root, and timestamps directly against Sepolia RPC:
@@ -194,7 +211,7 @@ npm run verify-deployment
 You do not need to trust the frontend to audit this round:
 
 1. **Inspect Contract Logic:**
-   - Review [QuadraticFundingRound.sol](file:///c:/Users/nikita/OneDrive/Desktop/d2/src/QuadraticFundingRound.sol#L283-L322) for the exact finalization loop.
+   - Review [QuadraticFundingRound.sol](file:///c:/Users/nikita/OneDrive/Desktop/d2/src/QuadraticFundingRound.sol#L275-L314) for the exact finalization loop.
    - Review [IntegerSqrt.sol](file:///c:/Users/nikita/OneDrive/Desktop/d2/src/libraries/IntegerSqrt.sol) for the Babylonian integer square root implementation.
 2. **Execute Onchain 200-Backer Test:**
    ```bash
@@ -211,10 +228,11 @@ You do not need to trust the frontend to audit this round:
 
 ## 7. Known Limitations & Trust Assumptions
 
-1. **Allowlist vs. Human Identity:** An onchain Merkle allowlist guarantees that each contributor holds an address from the attendee database. However, it cannot prevent a single human from accumulating multiple allowlisted private keys without biometric or decentralized identity layers (such as WorldID or Gitcoin Passport).
-2. **Block Gas Limit at Scale:** The contract limits registered projects to 100 and contributors per project to 1,000. In our benchmarks, finalization of 50 contributors consumed 627,454 gas (well within Ethereum's 30,000,000 block limit). For 10,000+ contributors, offchain score computation with optimistic ZK proofs would be recommended.
-3. **Integer Truncation:** Division truncation naturally produces rounding dust (typically 1 to 5 wei out of $10^{19}$ wei). This dust is safely retained in the contract matching pool.
-4. **Test Scenario Scope:** The 200-contributor versus one-whale demonstration is an architectural and mathematical verification test scenario designed to prove algorithmic resilience against capital concentration under sybil-resistant conditions; it is not a claim or proof of real-world community adoption.
+1. **Allowlist vs. Complete Sybil Resistance:** An onchain Merkle allowlist cryptographically guarantees that each contributing wallet belongs to the attendee database. However, an address allowlist proves wallet authorization, not biometric human uniqueness. Complete Sybil resistance in production requires decentralized identity layers (such as Gitcoin Passport, World ID, or Proof of Humanity).
+2. **Mathematical Scope of Test Scenario:** The 200-contributor versus one-whale simulation is an automated architectural and mathematical verification test scenario. It proves algorithmic resilience against concentrated capital under controlled conditions; it is not a claim of real-world community adoption.
+3. **Matching Pool Payout Nuance:** The 200:1 quadratic score advantage applies strictly to the two-project mathematical comparison. Final matching allocations depend on the total score across all registered projects ($\text{Match}_p = \text{floor}(M \times Q_p / Q_{\text{total}})$). The score ratio does not guarantee identical payout percentages under different pool configurations or multi-project distributions.
+4. **Block Gas Limit at Scale:** The contract limits registered projects to 100 and contributors per project to 1,000. In benchmarks, finalization of 50 contributors consumed 627,454 gas (well within Ethereum's 30,000,000 block limit). For 10,000+ contributors, offchain computation with optimistic ZK proofs would be recommended.
+5. **Integer Truncation:** Division truncation naturally produces rounding dust (typically 1 to 5 wei out of $10^{19}$ wei). This dust is safely retained in the contract matching pool.
 
 ---
 
@@ -223,7 +241,7 @@ You do not need to trust the frontend to audit this round:
 - [x] Fixed-point scaled integer square root implementation ($S = 10^9, S^2 = 10^{18}$)
 - [x] Anti-split contributor aggregation prior to square root evaluation
 - [x] Merkle tree proof eligibility for 200 unique community members
-- [x] Complete Foundry test suites passing (24 / 24 tests across 4 test suites)
+- [x] Complete Foundry test suites passing (29 / 29 tests across 5 test suites)
 - [x] Mathematical audit correcting sample reporting to exact values ($200:1$ ratio)
 - [x] Complete frontend implemented (Dashboard, Projects, Results, Operator, Methodology)
 - [x] Disconnected, Wrong-Network, Ineligible, and Empty UI states handled
