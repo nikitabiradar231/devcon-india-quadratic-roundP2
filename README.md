@@ -214,6 +214,7 @@ You do not need to trust the frontend to audit this round:
 1. **Allowlist vs. Human Identity:** An onchain Merkle allowlist guarantees that each contributor holds an address from the attendee database. However, it cannot prevent a single human from accumulating multiple allowlisted private keys without biometric or decentralized identity layers (such as WorldID or Gitcoin Passport).
 2. **Block Gas Limit at Scale:** The contract limits registered projects to 100 and contributors per project to 1,000. In our benchmarks, finalization of 50 contributors consumed 627,454 gas (well within Ethereum's 30,000,000 block limit). For 10,000+ contributors, offchain score computation with optimistic ZK proofs would be recommended.
 3. **Integer Truncation:** Division truncation naturally produces rounding dust (typically 1 to 5 wei out of $10^{19}$ wei). This dust is safely retained in the contract matching pool.
+4. **Test Scenario Scope:** The 200-contributor versus one-whale demonstration is an architectural and mathematical verification test scenario designed to prove algorithmic resilience against capital concentration under sybil-resistant conditions; it is not a claim or proof of real-world community adoption.
 
 ---
 
