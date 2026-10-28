@@ -1,0 +1,16 @@
+{
+  "network": "sepolia",
+  "chainId": 11155111,
+  "contractAddress": "",
+  "deploymentTxHash": "",
+  "deploymentBlock": null,
+  "deployerAddress": "",
+  "deploymentTimestamp": null,
+  "compilerVersion": "0.8.26",
+  "optimizer": {
+    "enabled": true,
+    "runs": 200
+  },
+  "sourceVerificationStatus": "pending_broadcast",
+  "explorerUrl": ""
+}
