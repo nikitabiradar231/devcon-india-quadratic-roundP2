@@ -1,0 +1,26 @@
+[
+  {
+    "rank": 1,
+    "projectId": 1,
+    "name": "Community Education & Dev Tools",
+    "recipient": "0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
+    "contributors": 200,
+    "contributionsETH": "2.0",
+    "quadraticScore": "400000000000000000000000000000000000000",
+    "matchingAllocationETH": "9.950248756218905472",
+    "totalClaimableETH": "11.950248756218905472",
+    "claimed": false
+  },
+  {
+    "rank": 2,
+    "projectId": 2,
+    "name": "Whale Funded Tooling",
+    "recipient": "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
+    "contributors": 1,
+    "contributionsETH": "2.0",
+    "quadraticScore": "1999999999999999997732481866842122304",
+    "matchingAllocationETH": "0.049751243781094527",
+    "totalClaimableETH": "2.049751243781094527",
+    "claimed": false
+  }
+]

@@ -1,0 +1,35 @@
+{
+  "name": "devcon-india-quadratic-round",
+  "version": "1.0.0",
+  "description": "Two Hundred Small Backers Should Beat One Whale - Quadratic Funding Platform for Road to Devcon XI",
+  "scripts": {
+    "build:contracts": "forge build",
+    "test:contracts": "forge test -vvv",
+    "generate-eligibility": "tsx scripts/generate-eligibility.ts",
+    "verify-results": "tsx scripts/verify-results.ts",
+    "verify-deployment": "tsx scripts/verify-deployment.ts",
+    "export-results": "tsx scripts/export-results.ts",
+    "frontend:install": "npm --prefix frontend install",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build",
+    "frontend:test": "npm --prefix frontend run test",
+    "test": "npm run test:contracts && npm run frontend:test"
+  },
+  "keywords": [
+    "ethereum",
+    "quadratic-funding",
+    "devcon",
+    "sepolia",
+    "foundry",
+    "solidity"
+  ],
+  "author": "Antigravity",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "dotenv": "^16.4.7",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2",
+    "viem": "^2.21.54"
+  }
+}
