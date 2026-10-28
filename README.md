@@ -172,28 +172,20 @@ npm run export-results
 
 ## 5. Sepolia Testnet Deployment
 
-### Simulation / Dry Run (No funds required)
-```bash
-forge script script/Deploy.s.sol:DeployScript -vvv
-```
+### Live Deployed Contract
+- **Contract Address:** [`0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC`](https://sepolia.etherscan.io/address/0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC)
+- **Deployment Transaction:** [`0x1834ef9d96daec11f03317c6e48b4ce934dfe94745802542e8797811867c7a33`](https://sepolia.etherscan.io/tx/0x1834ef9d96daec11f03317c6e48b4ce934dfe94745802542e8797811867c7a33)
+- **Deployment Block:** `12012407`
+- **Network:** Ethereum Sepolia (`chainId: 11155111`)
+- **Deployer / Operator:** `0x31e9117D0BfceA67088aA96e356473c52CF9f9fF`
+- **Eligibility Merkle Root:** `0x3d46a36f54db9dafd55ba03b00ccea72265b806e0cf494752ec20e9c20ab680d`
+- **Initial Matching Pool:** 0 wei
 
-### Live Testnet Broadcast
-To deploy to Ethereum Sepolia with a funded account:
+### Verify Deployment Onchain
+To verify bytecode, operator, Merkle root, and timestamps directly against Sepolia RPC:
 ```bash
-forge script script/Deploy.s.sol:DeployScript \
-  --rpc-url $SEPOLIA_RPC_URL \
-  --broadcast \
-  --verify \
-  --etherscan-api-key $ETHERSCAN_API_KEY
+npm run verify-deployment
 ```
-
-After broadcast:
-1. Copy the deployed contract address.
-2. Record it in `deployments/sepolia.json` and in `.env` under `VITE_CONTRACT_ADDRESS`.
-3. Verify deployment onchain:
-   ```bash
-   npm run verify-deployment
-   ```
 
 ---
 
@@ -239,5 +231,6 @@ You do not need to trust the frontend to audit this round:
 - [x] 11 Vitest frontend tests passing and production build passing
 - [x] Credential safety scan: Confirmed zero secrets tracked, `.env` gitignored
 - [x] GitHub synchronization: Repository pushed to `origin/main` at [devcon-india-quadratic-roundP2](https://github.com/nikitabiradar231/devcon-india-quadratic-roundP2)
-- [ ] Live Sepolia broadcast: Simulation dry-run verified; pending funded deployer private key in `.env`
+- [x] Live Sepolia deployment broadcast and verified onchain: [`0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC`](https://sepolia.etherscan.io/address/0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC)
+
 

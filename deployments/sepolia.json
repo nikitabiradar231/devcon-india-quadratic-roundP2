@@ -1,16 +1,16 @@
 {
   "network": "sepolia",
   "chainId": 11155111,
-  "contractAddress": "",
-  "deploymentTxHash": "",
-  "deploymentBlock": null,
-  "deployerAddress": "",
-  "deploymentTimestamp": null,
+  "contractAddress": "0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC",
+  "deploymentTxHash": "0x1834ef9d96daec11f03317c6e48b4ce934dfe94745802542e8797811867c7a33",
+  "deploymentBlock": 12012407,
+  "deployerAddress": "0x31e9117D0BfceA67088aA96e356473c52CF9f9fF",
+  "deploymentTimestamp": 1793191848,
   "compilerVersion": "0.8.26",
   "optimizer": {
     "enabled": true,
     "runs": 200
   },
-  "sourceVerificationStatus": "pending_broadcast",
-  "explorerUrl": ""
+  "sourceVerificationStatus": "deployed",
+  "explorerUrl": "https://sepolia.etherscan.io/address/0x95e1075FB72eb6b0C3b1DB308C0d8f99B0a16BDC"
 }
