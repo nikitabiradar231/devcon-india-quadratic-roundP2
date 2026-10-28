@@ -40,8 +40,8 @@ contract DeployScript is Script {
         try vm.envBytes32("ELIGIBILITY_ROOT") returns (bytes32 root) {
             eligibilityRoot = root;
         } catch {
-            // Default sample Merkle root
-            eligibilityRoot = 0x0000000000000000000000000000000000000000000000000000000000000001;
+            // Default to generated 200-member Merkle tree root from eligibility-tree.json
+            eligibilityRoot = 0x3d46a36f54db9dafd55ba03b00ccea72265b806e0cf494752ec20e9c20ab680d;
         }
 
         uint256 initialPool;

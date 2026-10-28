@@ -22,22 +22,19 @@ contract ConfigureRoundScript is Script {
 
             round.registerProject(
                 1,
-                "ZK Privacy Tools",
-                "Open-source zero-knowledge circuits for private identity and voting",
+                "Community Education & Dev Tools",
+                "Grassroots educational workshops, regional meetups, and developer tooling across India",
                 payable(op)
             );
 
             round.registerProject(
-                2,
-                "Solidity Gas Profiler",
-                "Developer CLI and VS Code extension for automated EVM gas bottleneck detection",
-                payable(op)
+                2, "Whale Funded Tooling", "Ethereum infrastructure tooling backed by concentrated capital", payable(op)
             );
 
             round.registerProject(
                 3,
-                "Ethereum India Fellowship",
-                "Community grassroots mentorship program onboarding next-gen Web3 developers",
+                "ZK Privacy Tools",
+                "Open-source zero-knowledge circuits for private identity and voting",
                 payable(op)
             );
 
